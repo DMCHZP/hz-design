@@ -25,5 +25,6 @@
         "no-case-declarations": "off",
         "no-constant-condition": "off",
         "@typescript-eslint/ban-ts-comment": "off"
-    }
+    },
+    "ignorePatterns": ["config/*.js","config/**/*.js"]
 }
