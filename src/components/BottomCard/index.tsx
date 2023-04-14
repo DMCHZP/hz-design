@@ -9,6 +9,18 @@ type Status = 'min' | 'normal' | 'max';
 
 let moveY = 0;
 let startY = 0;
+
+const throlle = (func: any, delay: number) => {
+	let pre = new Date().getTime();
+	return function (this: any, ...args: any[]) {
+		const now = new Date().getTime();
+		if (now - pre >= delay) {
+			func.apply(this, args);
+			pre = new Date().getTime();
+		}
+	};
+};
+
 const BottomCard = (props: BottomCardProps) => {
 	const { height } = props;
 	const [status, setStatus] = useState<Status>('min');
@@ -48,6 +60,8 @@ const BottomCard = (props: BottomCardProps) => {
 		});
 	};
 
+	const onTouchMoveThrolle = throlle(onTouchMove, 50);
+
 	const onTouchEnd = (e: any) => {
 		const deltaY = e.changedTouches[0].clientY - startY;
 		const clintHeight = cardRef.current.clientHeight;
@@ -86,7 +100,7 @@ const BottomCard = (props: BottomCardProps) => {
 		<div
 			ref={cardRef}
 			onTouchStart={onTouchStart}
-			onTouchMove={onTouchMove}
+			onTouchMove={onTouchMoveThrolle}
 			onTouchEnd={onTouchEnd}
 			className={styles.card}
 			style={{ ...transform, height: height }}
